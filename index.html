@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Une lettre pour toi ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f3ee;
+            --paper-color: #fffdf9;
+            --envelope-color: #e8ded1;
+            --envelope-dark: #d2c4b2;
+            --accent-red: #c0564b;
+            --text-main: #2c2a29;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .instructions {
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #7a736e;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 320px;
+            background: var(--envelope-color);
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .envelope-wrapper:hover { transform: translateY(-3px); }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 240px solid transparent;
+            border-right: 240px solid transparent;
+            border-top: 170px solid var(--envelope-dark);
+            transform-origin: top;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s;
+            z-index: 4;
+        }
+
+        .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 240px solid var(--envelope-color);
+            border-right: 240px solid var(--envelope-color);
+            border-bottom: 160px solid var(--envelope-dark);
+            border-radius: 0 0 8px 8px;
+            z-index: 3;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 5%;
+            width: 90%;
+            background: var(--paper-color);
+            padding: 35px 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            z-index: 2;
+            opacity: 0.9;
+            transform: translateY(0);
+        }
+
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-120px);
+            z-index: 5;
+            opacity: 1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .letter-content {
+            font-family: 'Playfair Display', serif;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .letter-header {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .letter-body {
+            margin-bottom: 30px;
+            white-space: pre-line;
+        }
+
+        .letter-footer {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            text-align: right;
+            margin-top: 20px;
+            color: var(--accent-red);
+        }
+
+        .interactive-zone {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #e0d8cf;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .signature-label {
+            font-size: 0.85rem;
+            color: #8c837b;
+        }
+
+        canvas {
+            border-bottom: 1.5px solid var(--text-main);
+            background: transparent;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid #b5a899;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        button:hover {
+            background: var(--text-main);
+            color: #fff;
+            border-color: var(--text-main);
+        }
+
+        .seal-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+        }
+
+        .seal-btn:hover { background: #a34339; }
+
+        .wax-seal {
+            display: none;
+            width: 70px;
+            height: 70px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(192, 86, 75, 0.4);
+            margin-top: 15px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 500px) {
+            .envelope-wrapper { height: 260px; }
+            .flap { border-left-width: 170px; border-right-width: 170px; border-top-width: 120px; }
+            .pocket { border-left-width: 170px; border-right-width: 170px; border-bottom-width: 120px; }
+            .envelope-wrapper.open .letter { transform: translateY(-80px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="instructions" id="instruction">Clique sur l'enveloppe pour la découvrir</div>
+
+    <div class="envelope-wrapper" id="envelope">
+        <div class="flap"></div>
+        <div class="pocket"></div>
+        
+        <div class="letter">
+            <div class="letter-content">
+                <div class="letter-header">Coucou ❤️</div>
+                <div class="letter-body">
+idk achno ngol ola bach nbda hmmmm , loove you're doing amaziiing super great iknow kdir li fjhdk oli gditi 3lih dima take it easy 3la rask no rush nd im pretty sure you'll make it wahd nhar . Iam super mega proud of youuuu bjhd omn ahsan nas li 3rft o tla9it fhyati u so cool wa3r boogoss my tyype ( btw ill always love you o think u beautiful wakha tkon 9ra3 ma3andkch ch3ar ) , aaaaaaaaaaaaaah tfkrt angolik hadik nwita ican love you for 4 days (summer,winter,autumn,spring), ola make it 3 days (yesterday, today, tomorrow), aactually make it 2😋(Day nd night ) , ajii ONE DAY li howa everyyyyyy fucking daaaaaaaaaaaaaay . 
+
+btw imma beat ur ass if u were treating me like shit . 
+
+I ADORE YOU AND LOVE YOU IN EVERY POSSIBLE WAY KBR MN SMA OLBHAR 🌍🌺🥀🪺🍄👩🏻‍❤️‍💋‍👨🏻
+                </div>
+                <div class="letter-footer">
+                    With all my love,
+                </div>
+
+                <div class="interactive-zone" id="interactiveZone">
+                    <span class="signature-label">Laisse ta signature ou un petit mot ci-dessous :</span>
+                    <canvas id="sigCanvas" width="300" height="80"></canvas>
+                    
+                    <div class="actions">
+                        <button id="clearBtn">Effacer</button>
+                        <button id="sealBtn" class="seal-btn">Sceller la lettre ❤️</button>
+                    </div>
+                </div>
+
+                <div class="wax-seal" id="waxSeal">Reçu ✨</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const envelope = document.getElementById('envelope');
+    const instruction = document.getElementById('instruction');
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    const clearBtn = document.getElementById('clearBtn');
+    const sealBtn = document.getElementById('sealBtn');
+    const interactiveZone = document.getElementById('interactiveZone');
+    const waxSeal = document.getElementById('waxSeal');
+
+    let isOpen = false;
+    let isDrawing = false;
+
+    envelope.addEventListener('click', (e) => {
+        if (e.target.closest('#interactiveZone')) return;
+        if (!isOpen) {
+            envelope.classList.add('open');
+            instruction.textContent = "Signe la lettre au bas du papier";
+            isOpen = true;
+        }
+    });
+
+    ctx.strokeStyle = '#2c2a29';
+    ctx.lineWidth = 1.8;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    function startDrawing(e) {
+        isDrawing = true;
+        draw(e);
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+        ctx.beginPath();
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        ctx.lineTo(clientX - rect.left, clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(clientX - rect.left, clientY - rect.top);
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', draw);
+
+    clearBtn.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    sealBtn.addEventListener('click', () => {
+        interactiveZone.style.display = 'none';
+        waxSeal.style.display = 'flex';
+        instruction.textContent = "Lettre scellée avec amour ❤️";
+    });
+</script>
+
+</body>
+</html>
