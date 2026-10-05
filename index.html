@@ -15,7 +15,11 @@
             --text-main: #2c2a29;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             background-color: var(--bg-color);
@@ -24,22 +28,23 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
+            padding: 40px 15px;
             overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 520px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
         .instructions {
-            margin-bottom: 25px;
-            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
             color: #7a736e;
             text-align: center;
             letter-spacing: 0.5px;
@@ -49,16 +54,13 @@
         .envelope-wrapper {
             position: relative;
             width: 100%;
-            max-width: 480px;
-            height: 320px;
+            height: 280px;
             background: var(--envelope-color);
             border-radius: 8px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: transform 0.4s ease;
+            transition: all 0.4s ease;
         }
-
-        .envelope-wrapper:hover { transform: translateY(-3px); }
 
         .flap {
             position: absolute;
@@ -66,9 +68,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 240px solid transparent;
-            border-right: 240px solid transparent;
-            border-top: 170px solid var(--envelope-dark);
+            border-left: 260px solid transparent;
+            border-right: 260px solid transparent;
+            border-top: 150px solid var(--envelope-dark);
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s;
             z-index: 4;
@@ -80,9 +82,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 240px solid var(--envelope-color);
-            border-right: 240px solid var(--envelope-color);
-            border-bottom: 160px solid var(--envelope-dark);
+            border-left: 260px solid var(--envelope-color);
+            border-right: 260px solid var(--envelope-color);
+            border-bottom: 150px solid var(--envelope-dark);
             border-radius: 0 0 8px 8px;
             z-index: 3;
         }
@@ -90,68 +92,74 @@
         .letter {
             position: absolute;
             bottom: 10px;
-            left: 5%;
-            width: 90%;
+            left: 4%;
+            width: 92%;
+            max-height: 240px;
             background: var(--paper-color);
-            padding: 35px 30px;
-            border-radius: 4px;
+            padding: 30px 22px;
+            border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2;
             opacity: 0.9;
-            transform: translateY(0);
+            overflow: hidden;
+        }
+
+        /* Quand la lettre s'ouvre */
+        .envelope-wrapper.open {
+            height: auto;
+            background: transparent;
+            box-shadow: none;
         }
 
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
-            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope-wrapper.open .pocket {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-120px);
+            position: relative;
+            bottom: auto;
+            left: auto;
+            width: 100%;
+            max-height: none;
             z-index: 5;
             opacity: 1;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: visible;
         }
 
         .letter-content {
             font-family: 'Playfair Display', serif;
             line-height: 1.8;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--text-main);
         }
 
-        .letter-header {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
         .letter-body {
-            margin-bottom: 30px;
             white-space: pre-line;
-        }
-
-        .letter-footer {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            text-align: right;
-            margin-top: 20px;
-            color: var(--accent-red);
+            word-break: break-word;
+            margin-bottom: 25px;
         }
 
         .interactive-zone {
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 20px;
             border-top: 1px dashed #e0d8cf;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .signature-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8c837b;
         }
 
@@ -164,8 +172,8 @@
 
         .actions {
             display: flex;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 8px;
         }
 
         button {
@@ -182,7 +190,6 @@
         button:hover {
             background: var(--text-main);
             color: #fff;
-            border-color: var(--text-main);
         }
 
         .seal-btn {
@@ -191,7 +198,9 @@
             border: none;
         }
 
-        .seal-btn:hover { background: #a34339; }
+        .seal-btn:hover {
+            background: #a34339;
+        }
 
         .wax-seal {
             display: none;
@@ -205,7 +214,7 @@
             font-family: 'Dancing Script', cursive;
             font-size: 1.2rem;
             box-shadow: 0 4px 10px rgba(192, 86, 75, 0.4);
-            margin-top: 15px;
+            margin: 20px auto 0 auto;
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -215,17 +224,23 @@
         }
 
         @media (max-width: 500px) {
-            .envelope-wrapper { height: 260px; }
-            .flap { border-left-width: 170px; border-right-width: 170px; border-top-width: 120px; }
-            .pocket { border-left-width: 170px; border-right-width: 170px; border-bottom-width: 120px; }
-            .envelope-wrapper.open .letter { transform: translateY(-80px); }
+            .flap {
+                border-left-width: 180px;
+                border-right-width: 180px;
+                border-top-width: 120px;
+            }
+            .pocket {
+                border-left-width: 180px;
+                border-right-width: 180px;
+                border-bottom-width: 120px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="instructions" id="instruction">Clique sur l'enveloppe pour la découvrir</div>
+    <div class="instructions" id="instruction">Clique sur l'enveloppe pour l'ouvrir</div>
 
     <div class="envelope-wrapper" id="envelope">
         <div class="flap"></div>
@@ -233,21 +248,15 @@
         
         <div class="letter">
             <div class="letter-content">
-                <div class="letter-header">Coucou ❤️</div>
-                <div class="letter-body">
-idk achno ngol ola bach nbda hmmmm , loove you're doing amaziiing super great iknow kdir li fjhdk oli gditi 3lih dima take it easy 3la rask no rush nd im pretty sure you'll make it wahd nhar . Iam super mega proud of youuuu bjhd omn ahsan nas li 3rft o tla9it fhyati u so cool wa3r boogoss my tyype ( btw ill always love you o think u beautiful wakha tkon 9ra3 ma3andkch ch3ar ) , aaaaaaaaaaaaaah tfkrt angolik hadik nwita ican love you for 4 days (summer,winter,autumn,spring), ola make it 3 days (yesterday, today, tomorrow), aactually make it 2😋(Day nd night ) , ajii ONE DAY li howa everyyyyyy fucking daaaaaaaaaaaaaay . 
+                <div class="letter-body">idk achno ngol ola bach nbda hmmmm , loove you're doing amaziiing super great iknow kdir li fjhdk oli gditi 3lih dima take it easy 3la rask no rush nd im pretty sure you'll make it wahd nhar . Iam super mega proud of youuuu bjhd omn ahsan nas li 3rft o tla9it fhyati u so cool wa3r boogoss my tyype ( btw ill always love you o think u beautiful wakha tkon 9ra3 ma3andkch ch3ar ) , aaaaaaaaaaaaaah tfkrt angolik hadik nwita ican love you for 4 days (summer,winter,autumn,spring), ola make it 3 days (yesterday, today, tomorrow), aactually make it 2😋(Day nd night ) , ajii ONE DAY li howa everyyyyyy fucking daaaaaaaaaaaaaay .
 
-btw imma beat ur ass if u were treating me like shit . 
+btw imma beat ur ass if u were treating me like shit .
 
-I ADORE YOU AND LOVE YOU IN EVERY POSSIBLE WAY KBR MN SMA OLBHAR 🌍🌺🥀🪺🍄👩🏻‍❤️‍💋‍👨🏻
-                </div>
-                <div class="letter-footer">
-                    With all my love,
-                </div>
+I ADORE YOU AND LOVE YOU IN EVERY POSSIBLE WAY KBR MN SMA OLBHAR 🌍🌺🥀🪺🍄👩🏻‍❤️‍💋‍👨🏻</div>
 
                 <div class="interactive-zone" id="interactiveZone">
                     <span class="signature-label">Laisse ta signature ou un petit mot ci-dessous :</span>
-                    <canvas id="sigCanvas" width="300" height="80"></canvas>
+                    <canvas id="sigCanvas" width="280" height="70"></canvas>
                     
                     <div class="actions">
                         <button id="clearBtn">Effacer</button>
@@ -325,7 +334,7 @@ I ADORE YOU AND LOVE YOU IN EVERY POSSIBLE WAY KBR MN SMA OLBHAR 🌍🌺🥀�
     sealBtn.addEventListener('click', () => {
         interactiveZone.style.display = 'none';
         waxSeal.style.display = 'flex';
-        instruction.textContent = "Lettre scellée avec amour ❤️";
+        instruction.textContent = "Lettre scellée avec amour ❤️️";
     });
 </script>
 
