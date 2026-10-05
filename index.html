@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter For You ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f5efe6;
+            --paper-color: #fffdf9;
+            --envelope-color: #e6d7c3;
+            --envelope-dark: #d5c3ac;
+            --accent-red: #d9534f;
+            --text-main: #2b2b2b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 580px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .instructions {
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #8c7d70;
+            text-align: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Enveloppe */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 330px;
+            background: var(--envelope-color);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-3px);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 250px solid transparent;
+            border-right: 250px solid transparent;
+            border-top: 175px solid var(--envelope-dark);
+            transform-origin: top;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s;
+            z-index: 4;
+        }
+
+        .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 250px solid var(--envelope-color);
+            border-right: 250px solid var(--envelope-color);
+            border-bottom: 165px solid var(--envelope-dark);
+            border-radius: 0 0 12px 12px;
+            z-index: 3;
+        }
+
+        /* Lettre */
+        .letter {
+            position: absolute;
+            bottom: 15px;
+            left: 4%;
+            width: 92%;
+            background: var(--paper-color);
+            padding: 35px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            z-index: 2;
+            opacity: 0.95;
+            transform: translateY(0);
+        }
+
+        /* État Ouvert */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-130px);
+            z-index: 5;
+            opacity: 1;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+        }
+
+        /* Contenu du texte */
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            line-height: 1.5;
+            font-size: 1.4rem;
+            color: #222;
+        }
+
+        .letter-body {
+            white-space: pre-line;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+        }
+
+        .emoji-bar {
+            font-size: 1.6rem;
+            text
